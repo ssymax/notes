@@ -1,12 +1,16 @@
 import React, { useState } from 'react';
+import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import { Formik, Form, Field } from 'formik';
-import axios from 'axios';
+import { connect } from 'react-redux';
+import { Redirect } from 'react-router-dom';
 import Input from '../components/atoms/Input/Input';
 import Button from '../components/atoms/Button/Button';
 import Heading from '../components/atoms/Heading/Heading';
 import Paragraph from '../components/atoms/Paragraph/Paragraph';
 import AuthTemplate from '../templates/AuthTemplate';
+import { authenticate as authenticateAction } from "../actions";
+import { routes } from '../routes';
 
 const StyledAuthWrapper = styled(Form)`
   display: flex;
@@ -39,7 +43,7 @@ const StyledChangeViewLink = styled(Paragraph)`
   }
 `;
 
-const LoginPage = () => {
+const LoginPage = ({ userID, authenticate }) => {
   const [viewChange, setView] = useState(false);
 
   const handleRegisterChange = () => setView(true);
@@ -51,56 +55,61 @@ const LoginPage = () => {
       <Formik
         initialValues={{ username: '', password: '' }}
         onSubmit={({ username, password }) => {
-          axios
-            .post('http://localhost:9000/api/user/login', {
-              username,
-              password,
-            })
-            .then(() => console.log('Login successful'))
-            .catch((err) => console.log(err));
+          authenticate(username, password);
         }}
       >
-        {() => (
-          <StyledAuthWrapper>
-            <Field
-              as={StyledInput}
-              name="username"
-              type="text"
-              placeholder="name"
-              autofocus="autofocus"
-            />
-            <Field as={StyledInput} name="password" type="password" placeholder="password" />
-            {viewChange && (
+        {() => {
+          if (userID) {
+            return <Redirect to={routes.home} />;
+          }
+
+          return (
+            <StyledAuthWrapper>
               <Field
                 as={StyledInput}
-                name="passwordConfirm"
-                type="password"
-                placeholder="repeat password"
+                name="username"
+                type="text"
+                placeholder="name"
+                autofocus="autofocus"
               />
-            )}
+              <Field as={StyledInput} name="password" type="password" placeholder="password" />
 
-            {viewChange ? (
-              <Button activeColor="notes" type="submit">
-                register
-              </Button>
-            ) : (
-              <Button activeColor="notes" type="submit">
-                sign in
-              </Button>
-            )}
+              {viewChange ? (
+                <Button activeColor="notes" type="submit">
+                  register
+                </Button>
+              ) : (
+                <Button activeColor="notes" type="submit">
+                  sign in
+                </Button>
+              )}
 
-            {viewChange ? (
-              <StyledChangeViewLink onClick={handleLoginChange}>Back to login</StyledChangeViewLink>
-            ) : (
-              <StyledChangeViewLink onClick={handleRegisterChange}>
-                New? Just register!
-              </StyledChangeViewLink>
-            )}
-          </StyledAuthWrapper>
-        )}
+              {viewChange ? (
+                <StyledChangeViewLink onClick={handleLoginChange}>
+                  Back to login
+                </StyledChangeViewLink>
+              ) : (
+                <StyledChangeViewLink onClick={handleRegisterChange}>
+                  New? Just register!
+                </StyledChangeViewLink>
+              )}
+            </StyledAuthWrapper>
+          );
+        }}
       </Formik>
     </AuthTemplate>
   );
 };
 
-export default LoginPage;
+LoginPage.propTypes = {
+  userID: PropTypes.string.isRequired,
+  authenticate: PropTypes.string.isRequired,
+};
+
+const mapStateToProps = ({ userID = null }) => ({ userID });
+
+const mapDispatchToProps = (dispatch) => ({
+  authenticate: (username, password) => dispatch(authenticateAction(username, password)),
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(LoginPage);
