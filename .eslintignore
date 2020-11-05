@@ -1,5 +1,5 @@
 src/stories/
 src/components/**/**/*.stories.js
 src/theme/mainTheme.js
-/src/views/DetailsPage.js
+src/views/DetailsPage.js
 src/templates/MainTemplete.js

@@ -11,8 +11,6 @@ export const removeItem = (itemType, id) => {
 export const addItem = (itemType, itemContent) => {
   const getId = () => `_${Math.random().toString(36).substr(2, 9)}`;
 
-  console.log(getId());
-
   return {
     type: 'ADD_ITEM',
     payload: {
