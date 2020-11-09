@@ -9,7 +9,7 @@ import Button from '../components/atoms/Button/Button';
 import Heading from '../components/atoms/Heading/Heading';
 import Paragraph from '../components/atoms/Paragraph/Paragraph';
 import AuthTemplate from '../templates/AuthTemplate';
-import { authenticate as authenticateAction } from "../actions";
+import { authenticate as authenticateAction } from '../actions';
 import { routes } from '../routes';
 
 const StyledAuthWrapper = styled(Form)`
@@ -103,7 +103,11 @@ const LoginPage = ({ userID, authenticate }) => {
 
 LoginPage.propTypes = {
   userID: PropTypes.string.isRequired,
-  authenticate: PropTypes.string.isRequired,
+  authenticate: PropTypes.func.isRequired,
+};
+
+PropTypes.defaultProps = {
+  userID: null,
 };
 
 const mapStateToProps = ({ userID = null }) => ({ userID });

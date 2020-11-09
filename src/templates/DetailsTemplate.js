@@ -47,25 +47,21 @@ const StyledHeading = styled(Heading)`
   font-size: ${({ theme }) => theme.fontSize.xl};
 `;
 
-const StyledParagraph = styled(Paragraph)`
-  text-transform: uppercase;
-  font-weight: ${({ theme }) => theme.regular};
-`;
-
 const StyledText = styled(Paragraph)`
   padding-bottom: 20px;
 `;
 
-const DetailsTemplate = ({ pageContext, articleUrl, twitterName, created, content, title }) => (
+const DetailsTemplate = ({ pageContext, articleUrl, twitterName, content, title }) => (
   <UserPageTemplate>
     <StyledWrapper>
       <StyledHeader>
         {pageContext === 'twitters' && (
           <StyledImage alt={title} src={`https://twitter-avatar.now.sh/${twitterName}`} />
         )}
-        {pageContext === 'articles' && <StyledLinkButton href={articleUrl} />}
+        {pageContext === 'articles' && (
+          <StyledLinkButton target="_blank" rel="noopener norefferer" href={articleUrl} />
+        )}
         <StyledHeading>{title}</StyledHeading>
-        <StyledParagraph>{created}</StyledParagraph>
       </StyledHeader>
       <StyledText>{content}</StyledText>
       <Button as={Link} to={`/${pageContext}`} activeColor={pageContext}>
@@ -79,7 +75,6 @@ DetailsTemplate.propTypes = {
   pageContext: PropTypes.string.isRequired,
   articleUrl: PropTypes.string.isRequired,
   twitterName: PropTypes.string.isRequired,
-  created: PropTypes.string.isRequired,
   content: PropTypes.string.isRequired,
   title: PropTypes.string.isRequired,
 };

@@ -40,12 +40,6 @@ const InnerWrapper = styled.div`
     `}
 `;
 
-const DateInfo = styled(Paragraph)`
-  font-weight: ${({ theme }) => theme.regular};
-  font-size: ${({ theme }) => theme.fontSize.xs};
-  margin: 0;
-`;
-
 const Info = styled(Paragraph)`
   padding-bottom: 20px;
   margin: 0;
@@ -75,29 +69,19 @@ const StyledLinkButton = styled.a`
   transform: translateY(-50%);
 `;
 
-const Card = ({
-  id,
-  pageContext,
-  title,
-  created,
-  twitterName,
-  articleUrl,
-  content,
-  removeItem,
-}) => {
+const Card = ({ id, pageContext, title, twitterName, articleUrl, content, removeItem }) => {
   const [redirect, setDirect] = useState(false);
 
   const handleCardClick = () => setDirect(true);
 
   if (redirect) {
-    return <Redirect to={`${pageContext}/details/${id}`} />;
+    return <Redirect to={`${pageContext}/${id}`} />;
   }
 
   return (
-    <StyledWrapper onClick={handleCardClick}>
-      <InnerWrapper activeColor={pageContext}>
+    <StyledWrapper>
+      <InnerWrapper onClick={handleCardClick} activeColor={pageContext}>
         <Heading>{title}</Heading>
-        <DateInfo>{created}</DateInfo>
         {pageContext === 'twitters' && (
           <StyledAvatar src={`https://twitter-avatar.now.sh/${twitterName}`} />
         )}
@@ -115,9 +99,8 @@ const Card = ({
 
 Card.propTypes = {
   pageContext: PropTypes.oneOf(['notes', 'twitters', 'articles']),
-  id: PropTypes.number.isRequired,
+  id: PropTypes.string.isRequired,
   title: PropTypes.string.isRequired,
-  created: PropTypes.string.isRequired,
   twitterName: PropTypes.string,
   articleUrl: PropTypes.string,
   content: PropTypes.string.isRequired,

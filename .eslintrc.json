@@ -6,6 +6,7 @@
     "import/prefer-default-export": 0,
     "import/no-extraneous-dependencies": 0,
     "react/jsx-props-no-spreading": "off",
+    "react/destructuring-assignment": 0,
     "react/jsx-filename-extension": [
       1,
       {
