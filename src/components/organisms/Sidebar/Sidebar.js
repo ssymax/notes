@@ -2,8 +2,10 @@ import React from 'react';
 import styled from 'styled-components';
 import { NavLink } from 'react-router-dom';
 import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
+import { logoutUser as logoutAction } from "../../../actions";
 import ButtonIcon from '../../atoms/ButtonIcon/ButtonIcon';
-import logout from '../../../assets/icons/logout.svg';
+import logoutIcon from '../../../assets/icons/logout.svg';
 import pen from '../../../assets/icons/pen.svg';
 import twitter from '../../../assets/icons/twitter.svg';
 import bulb from '../../../assets/icons/bulb.svg';
@@ -56,7 +58,7 @@ const LinkWrapper = styled.ul`
   padding: 0;
 `;
 
-const Sidebar = ({ pageContext }) => (
+const Sidebar = ({ pageContext, logoutUser }) => (
   <StyledWrapper activeColor={pageContext}>
     <StyledLogo to="/" />
     <LinkWrapper>
@@ -70,16 +72,27 @@ const Sidebar = ({ pageContext }) => (
         <ButtonIcon as={NavLink} to="/articles" icon={bulb} activeclass="active" />
       </li>
     </LinkWrapper>
-    <StyledLogout as={NavLink} to="/login" icon={logout} activeclass="active" />
+    <StyledLogout
+      onClick={logoutUser}
+      as={NavLink}
+      to="/login"
+      icon={logoutIcon}
+      activeclass="active"
+    />
   </StyledWrapper>
 );
 
-export default withContext(Sidebar);
-
 Sidebar.propTypes = {
   pageContext: PropTypes.oneOf(['notes', 'twitters', 'articles']),
+  logoutUser: PropTypes.func.isRequired,
 };
 
 Sidebar.defaultProps = {
   pageContext: 'notes',
 };
+
+const mapDispatchToProps = (dispatch) => ({
+  logoutUser: () => dispatch(logoutAction()),
+});
+
+export default connect(null, mapDispatchToProps)(withContext(Sidebar));

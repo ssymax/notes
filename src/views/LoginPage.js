@@ -9,7 +9,8 @@ import Button from '../components/atoms/Button/Button';
 import Heading from '../components/atoms/Heading/Heading';
 import Paragraph from '../components/atoms/Paragraph/Paragraph';
 import AuthTemplate from '../templates/AuthTemplate';
-import { authenticate as authenticateAction } from '../actions';
+import { authenticate as authenticateAction , register as registerAction } from '../actions';
+
 import { routes } from '../routes';
 
 const StyledAuthWrapper = styled(Form)`
@@ -43,7 +44,7 @@ const StyledChangeViewLink = styled(Paragraph)`
   }
 `;
 
-const LoginPage = ({ userID, authenticate }) => {
+const LoginPage = ({ userID, authenticate, register }) => {
   const [viewChange, setView] = useState(false);
 
   const handleRegisterChange = () => setView(true);
@@ -53,9 +54,13 @@ const LoginPage = ({ userID, authenticate }) => {
     <AuthTemplate>
       <StyledHeading>sign in</StyledHeading>
       <Formik
-        initialValues={{ username: '', password: '' }}
+        initialValues={{ username: '', password: '', viewChange: false }}
         onSubmit={({ username, password }) => {
-          authenticate(username, password);
+          if (!viewChange) {
+            authenticate(username, password);
+          } else {
+            register(username, password);
+          }
         }}
       >
         {() => {
@@ -72,7 +77,12 @@ const LoginPage = ({ userID, authenticate }) => {
                 placeholder="name"
                 autofocus="autofocus"
               />
-              <Field as={StyledInput} name="password" type="password" placeholder="password" />
+              <Field
+                as={StyledInput}
+                name="password"
+                type="password"
+                placeholder={viewChange ? 'new password' : 'password'}
+              />
 
               {viewChange ? (
                 <Button activeColor="notes" type="submit">
@@ -102,11 +112,12 @@ const LoginPage = ({ userID, authenticate }) => {
 };
 
 LoginPage.propTypes = {
-  userID: PropTypes.string.isRequired,
+  userID: PropTypes.string,
   authenticate: PropTypes.func.isRequired,
+  register: PropTypes.func.isRequired,
 };
 
-PropTypes.defaultProps = {
+LoginPage.defaultProps = {
   userID: null,
 };
 
@@ -114,6 +125,7 @@ const mapStateToProps = ({ userID = null }) => ({ userID });
 
 const mapDispatchToProps = (dispatch) => ({
   authenticate: (username, password) => dispatch(authenticateAction(username, password)),
+  register: (username, password) => dispatch(registerAction(username, password)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(LoginPage);

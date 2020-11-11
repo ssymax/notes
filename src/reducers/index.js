@@ -1,12 +1,22 @@
-import { ADD_ITEM_SUCCESS, REMOVE_ITEM_SUCCESS, AUTH_SUCCESS, FETCH_SUCCESS } from '../actions';
+import {
+  ADD_ITEM_SUCCESS,
+  REMOVE_ITEM_SUCCESS,
+  AUTH_SUCCESS,
+  FETCH_SUCCESS,
+  REGISTER_SUCCESS,
+  LOGOUT,
+} from '../actions';
 
-const initialState = {
-  userID: '5f9c52c85d243e04c2c12cda',
-};
+const initialState = {};
 
 const rootReducer = (state = initialState, action) => {
   switch (action.type) {
     case AUTH_SUCCESS:
+      return {
+        ...state,
+        userID: action.payload.data._id,
+      };
+    case REGISTER_SUCCESS:
       return {
         ...state,
         userID: action.payload.data._id,
@@ -28,7 +38,10 @@ const rootReducer = (state = initialState, action) => {
           ...state[action.payload.itemType].filter((item) => item._id !== action.payload.id),
         ],
       };
-
+    case LOGOUT:
+      return {
+        ...initialState,
+      };
     default:
       return state;
   }

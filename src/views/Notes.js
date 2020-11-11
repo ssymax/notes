@@ -15,8 +15,8 @@ class Notes extends Component {
 
     return (
       <GridTemplate>
-        {notes.map(({ _id: id, title, content, created }) => (
-          <Card id={id} title={title} content={content} created={created} key={id} />
+        {notes.map(({ _id: id, title, content }) => (
+          <Card id={id} title={title} content={content} key={id} />
         ))}
       </GridTemplate>
     );
@@ -29,7 +29,6 @@ Notes.propTypes = {
       _id: PropTypes.number.isRequired,
       title: PropTypes.string.isRequired,
       content: PropTypes.string.isRequired,
-      created: PropTypes.string.isRequired,
     }),
   ),
   fetchNotes: PropTypes.func.isRequired,
