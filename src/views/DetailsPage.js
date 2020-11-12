@@ -21,7 +21,7 @@ class DetailsPage extends Component {
     } else {
       const { id } = this.props.match.params;
       axios
-        .get(`http://localhost:9000/api/note/${id}`)
+        .get(`https://backend-to-react-app.herokuapp.com/note/${id}`)
         .then(({ data }) => {
           console.log(data);
           this.setState({ activeItem: data });

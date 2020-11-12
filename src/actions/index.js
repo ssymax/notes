@@ -59,7 +59,7 @@ export const register = (username, password) => (dispatch) => {
   dispatch({ type: REGISTER_REQUEST });
 
   return axios
-    .post('https://backend-to-react-app.herokuapp.com/api/register', {
+    .post('https://backend-to-react-app.herokuapp.com/api/user/register', {
       username,
       password,
     })

@@ -21,7 +21,8 @@
   },
   "globals": {
     "document": true,
-    "window": true
+    "window": true,
+    "alert": true
   },
   "settings": {
     "import/resolver": {

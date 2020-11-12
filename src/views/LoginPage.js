@@ -9,8 +9,7 @@ import Button from '../components/atoms/Button/Button';
 import Heading from '../components/atoms/Heading/Heading';
 import Paragraph from '../components/atoms/Paragraph/Paragraph';
 import AuthTemplate from '../templates/AuthTemplate';
-import { authenticate as authenticateAction , register as registerAction } from '../actions';
-
+import { authenticate as authenticateAction, register as registerAction } from '../actions';
 import { routes } from '../routes';
 
 const StyledAuthWrapper = styled(Form)`
@@ -44,6 +43,8 @@ const StyledChangeViewLink = styled(Paragraph)`
   }
 `;
 
+const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
+
 const LoginPage = ({ userID, authenticate, register }) => {
   const [viewChange, setView] = useState(false);
 
@@ -55,15 +56,21 @@ const LoginPage = ({ userID, authenticate, register }) => {
       <StyledHeading>sign in</StyledHeading>
       <Formik
         initialValues={{ username: '', password: '', viewChange: false }}
-        onSubmit={({ username, password }) => {
+        onSubmit={(values, { resetForm }) => {
           if (!viewChange) {
-            authenticate(username, password);
+            sleep(500);
+            authenticate(values.username, values.password);
+            resetForm({});
+            alert('Login OK');
           } else {
-            register(username, password);
+            sleep(500);
+            register(values.username, values.password);
+            resetForm({});
+            alert('Register OK');
           }
         }}
       >
-        {() => {
+        {({ values }) => {
           if (userID) {
             return <Redirect to={routes.home} />;
           }
@@ -76,12 +83,14 @@ const LoginPage = ({ userID, authenticate, register }) => {
                 type="text"
                 placeholder="name"
                 autofocus="autofocus"
+                value={values.username}
               />
               <Field
                 as={StyledInput}
                 name="password"
                 type="password"
                 placeholder={viewChange ? 'new password' : 'password'}
+                value={values.password}
               />
 
               {viewChange ? (
