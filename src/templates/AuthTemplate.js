@@ -1,7 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import styled from 'styled-components';
+import styled, { keyframes } from 'styled-components';
 import Heading from '../components/atoms/Heading/Heading';
+import ChatBubble from '../components/atoms/ChatBubble/ChatBubble';
 import logoIcon from '../assets/icons/logo.svg';
 
 const StyledWrapper = styled.div`
@@ -16,10 +17,31 @@ const StyledWrapper = styled.div`
   align-items: center;
 `;
 
-const LogoWrapper = styled.img`
+const StyledLogoWrapper = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+`;
+
+const fadeIn = keyframes`
+  0%, {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+`;
+
+const ImageWrapper = styled.img`
   height: 200px;
   width: 200px;
   margin-bottom: 20px;
+  position: relative;
+`;
+
+const StyledChatBubble = styled(ChatBubble)`
+  animation: 0.5s ${fadeIn} ease-in-out;
+  transform: translate(130px, -30px);
 `;
 
 const StyledAuthWrapper = styled.div`
@@ -35,9 +57,13 @@ const StyledAuthWrapper = styled.div`
   border-radius: 10px;
 `;
 
-const AuthTemplate = ({ children }) => (
+const AuthTemplate = ({ children, viewChatBubble, textInBubble, error }) => (
   <StyledWrapper>
-    <LogoWrapper src={logoIcon} />
+    <StyledLogoWrapper>
+      <ImageWrapper src={logoIcon} />
+      {viewChatBubble && <StyledChatBubble>{textInBubble}</StyledChatBubble>}
+      {error && <StyledChatBubble>Register first!</StyledChatBubble>}
+    </StyledLogoWrapper>
     <Heading>Your new notes experience</Heading>
     <StyledAuthWrapper>{children}</StyledAuthWrapper>
   </StyledWrapper>
@@ -45,6 +71,9 @@ const AuthTemplate = ({ children }) => (
 
 AuthTemplate.propTypes = {
   children: PropTypes.arrayOf(PropTypes.object).isRequired,
+  viewChatBubble: PropTypes.bool.isRequired,
+  textInBubble: PropTypes.string.isRequired,
+  error: PropTypes.string.isRequired,
 };
 
 export default AuthTemplate;

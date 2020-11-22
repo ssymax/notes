@@ -15,6 +15,11 @@ const Button = styled.button`
   font-size: 16px;
   text-transform: uppercase;
   text-decoration: none;
+  cursor: pointer;
+
+  :hover {
+    color: white;
+  }
 
   ${({ small }) =>
     small &&

@@ -31,7 +31,6 @@ class MainTemplate extends Component {
       this.setState({
         pageType: currentPage,
       });
-      console.log(this.state);
     }
   };
 

@@ -5,6 +5,7 @@ import {
   FETCH_SUCCESS,
   REGISTER_SUCCESS,
   LOGOUT,
+  AUTH_FAILURE,
 } from '../actions';
 
 const initialState = {};
@@ -15,11 +16,18 @@ const rootReducer = (state = initialState, action) => {
       return {
         ...state,
         userID: action.payload.data._id,
+        error: null,
+      };
+    case AUTH_FAILURE:
+      return {
+        ...state,
+        error: action.error,
       };
     case REGISTER_SUCCESS:
       return {
         ...state,
         userID: action.payload.data._id,
+        error: null,
       };
     case FETCH_SUCCESS:
       return {

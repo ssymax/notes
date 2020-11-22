@@ -43,36 +43,37 @@ const StyledChangeViewLink = styled(Paragraph)`
   }
 `;
 
-const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
-
-const LoginPage = ({ userID, authenticate, register }) => {
+const LoginPage = ({ userID, authenticate, register, error }) => {
   const [viewChange, setView] = useState(false);
-
   const handleRegisterChange = () => setView(true);
   const handleLoginChange = () => setView(false);
 
+  const [viewChatBubble, setBubble] = useState(false);
+
+  const [textInBubble, setText] = useState('');
+
+  const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
+
+  const onSubmit = async (values, { resetForm }) => {
+    if (!viewChange) {
+      await authenticate(values.username, values.password);
+      await resetForm({});
+    } else {
+      await sleep(500);
+      await register(values.username, values.password);
+      await resetForm({});
+      await setText('Register success!');
+      await setBubble(true);
+    }
+  };
+
   return (
-    <AuthTemplate>
+    <AuthTemplate viewChatBubble={viewChatBubble} textInBubble={textInBubble} error={error}>
       <StyledHeading>sign in</StyledHeading>
-      <Formik
-        initialValues={{ username: '', password: '', viewChange: false }}
-        onSubmit={(values, { resetForm }) => {
-          if (!viewChange) {
-            sleep(500);
-            authenticate(values.username, values.password);
-            resetForm({});
-            alert('Login OK');
-          } else {
-            sleep(500);
-            register(values.username, values.password);
-            resetForm({});
-            alert('Register OK');
-          }
-        }}
-      >
+      <Formik initialValues={{ username: '', password: '', viewChange: false }} onSubmit={onSubmit}>
         {({ values }) => {
           if (userID) {
-            return <Redirect to={routes.home} />;
+            return <Redirect to={routes.notes} />;
           }
 
           return (
@@ -82,7 +83,7 @@ const LoginPage = ({ userID, authenticate, register }) => {
                 name="username"
                 type="text"
                 placeholder="name"
-                autofocus="autofocus"
+                autofocus="autoFocus"
                 value={values.username}
               />
               <Field
@@ -121,6 +122,7 @@ const LoginPage = ({ userID, authenticate, register }) => {
 };
 
 LoginPage.propTypes = {
+  error: PropTypes.string,
   userID: PropTypes.string,
   authenticate: PropTypes.func.isRequired,
   register: PropTypes.func.isRequired,
@@ -128,9 +130,10 @@ LoginPage.propTypes = {
 
 LoginPage.defaultProps = {
   userID: null,
+  error: null,
 };
 
-const mapStateToProps = ({ userID = null }) => ({ userID });
+const mapStateToProps = ({ userID = null, error }) => ({ userID, error });
 
 const mapDispatchToProps = (dispatch) => ({
   authenticate: (username, password) => dispatch(authenticateAction(username, password)),

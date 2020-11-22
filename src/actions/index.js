@@ -48,11 +48,10 @@ export const authenticate = (username, password) => (dispatch) => {
       username,
       password,
     })
-    .then((payload) => dispatch({ type: AUTH_SUCCESS, payload }))
-    .catch((err) => {
-      console.log(err);
-      dispatch({ type: AUTH_FAILURE });
-    });
+    .then(
+      (payload) => dispatch({ type: AUTH_SUCCESS, payload }),
+      (error) => dispatch({ type: AUTH_FAILURE, error: error.name }),
+    );
 };
 
 export const register = (username, password) => (dispatch) => {

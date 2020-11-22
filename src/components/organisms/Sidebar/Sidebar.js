@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import { NavLink } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { logoutUser as logoutAction } from "../../../actions";
+import { logoutUser as logoutAction } from '../../../actions';
 import ButtonIcon from '../../atoms/ButtonIcon/ButtonIcon';
 import logoutIcon from '../../../assets/icons/logout.svg';
 import pen from '../../../assets/icons/pen.svg';
@@ -31,14 +31,14 @@ const StyledWrapper = styled.nav`
 
 const StyledLogo = styled(NavLink)`
   display: block;
-  margin-top: 20px;
+  margin-top: 10px;
   margin-bottom: 10vh;
-  height: 67px;
+  height: 77px;
   width: 130px;
   background-image: url(${logo});
   background-repeat: no-repeat;
   background-position: 50% 50%;
-  background-size: 50%;
+  background-size: 40%;
   border: none;
 
   &:hover {
