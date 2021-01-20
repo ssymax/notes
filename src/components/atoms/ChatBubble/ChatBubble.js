@@ -1,16 +1,15 @@
 import styled from 'styled-components';
-import bubble from '../../../assets/icons/bubble.svg';
 
 const ChatBubble = styled.div`
-  height: 100px;
-  width: 150px;
-  background-image: url(${bubble});
-  background-position: 50%;
+  height: 130px;
+  width: 120px;
+  background-image: url(${({ bubble }) => bubble});
+  background-color: ${({ theme }) => theme.notes};
   background-repeat: no-repeat;
+  background-position: 50% 50%;
+  background-size: 80% 80%;
   position: absolute;
-  display: flex;
-  justify-content: center;
-  align-items: center;
+  display: block;
   z-index: 2000;
 `;
 

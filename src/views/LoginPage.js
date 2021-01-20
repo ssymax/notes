@@ -45,37 +45,31 @@ const StyledChangeViewLink = styled(Paragraph)`
 
 const LoginPage = ({ userID, authenticate, register, error }) => {
   const [viewChange, setView] = useState(false);
-  const handleRegisterChange = () => setView(true);
-  const handleLoginChange = () => setView(false);
 
-  const [viewChatBubble, setBubble] = useState(false);
-
-  const [textInBubble, setText] = useState('');
+  const [viewBubble, setBubble] = useState(false);
 
   const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
 
-  const onSubmit = async (values, { resetForm }) => {
+  const onSubmit = (values, { resetForm }) => {
     if (!viewChange) {
-      await authenticate(values.username, values.password);
-      await resetForm({});
+      authenticate(values.username, values.password);
+      resetForm({});
     } else {
-      await sleep(500);
-      await register(values.username, values.password);
-      await resetForm({});
-      await setText('Register success!');
-      await setBubble(true);
+      sleep(500);
+      register(values.username, values.password);
+      resetForm({});
+      setBubble(true);
     }
   };
 
   return (
-    <AuthTemplate viewChatBubble={viewChatBubble} textInBubble={textInBubble} error={error}>
+    <AuthTemplate viewBubble={viewBubble} error={error}>
       <StyledHeading>sign in</StyledHeading>
       <Formik initialValues={{ username: '', password: '', viewChange: false }} onSubmit={onSubmit}>
         {({ values }) => {
           if (userID) {
             return <Redirect to={routes.notes} />;
           }
-
           return (
             <StyledAuthWrapper>
               <Field
@@ -83,36 +77,25 @@ const LoginPage = ({ userID, authenticate, register, error }) => {
                 name="username"
                 type="text"
                 placeholder="name"
-                autofocus="autoFocus"
+                autoFocus
                 value={values.username}
               />
               <Field
                 as={StyledInput}
                 name="password"
                 type="password"
+                autoComplete="true"
                 placeholder={viewChange ? 'new password' : 'password'}
                 value={values.password}
               />
 
-              {viewChange ? (
-                <Button activeColor="notes" type="submit">
-                  register
-                </Button>
-              ) : (
-                <Button activeColor="notes" type="submit">
-                  sign in
-                </Button>
-              )}
+              <Button activeColor="notes" type="submit">
+                {viewChange ? 'register' : 'sign in'}
+              </Button>
 
-              {viewChange ? (
-                <StyledChangeViewLink onClick={handleLoginChange}>
-                  Back to login
-                </StyledChangeViewLink>
-              ) : (
-                <StyledChangeViewLink onClick={handleRegisterChange}>
-                  New? Just register!
-                </StyledChangeViewLink>
-              )}
+              <StyledChangeViewLink onClick={() => setView(!viewChange)}>
+                {viewChange ? 'Back to login' : 'New? Just register!'}
+              </StyledChangeViewLink>
             </StyledAuthWrapper>
           );
         }}

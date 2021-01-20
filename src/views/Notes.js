@@ -12,7 +12,6 @@ class Notes extends Component {
 
   render() {
     const { notes } = this.props;
-
     return (
       <GridTemplate>
         {notes.map(({ _id: id, title, content }) => (
@@ -26,7 +25,7 @@ class Notes extends Component {
 Notes.propTypes = {
   notes: PropTypes.arrayOf(
     PropTypes.shape({
-      _id: PropTypes.number.isRequired,
+      _id: PropTypes.string.isRequired,
       title: PropTypes.string.isRequired,
       content: PropTypes.string.isRequired,
     }),

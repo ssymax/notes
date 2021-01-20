@@ -50,6 +50,7 @@ const StyledAvatar = styled.img`
   width: 86px;
   height: 86px;
   border: 3px solid ${({ theme }) => theme.twitters};
+  background-color: white;
   border-radius: 50px;
   position: absolute;
   right: 20px;
@@ -69,7 +70,7 @@ const StyledLinkButton = styled.a`
   transform: translateY(-50%);
 `;
 
-const Card = ({ id, pageContext, title, twitterName, articleUrl, content, removeItem }) => {
+const Card = ({ id, pageContext, title, articleUrl, content, twitterName, removeItem }) => {
   const [redirect, setDirect] = useState(false);
 
   const handleCardClick = () => setDirect(true);
@@ -82,9 +83,7 @@ const Card = ({ id, pageContext, title, twitterName, articleUrl, content, remove
     <StyledWrapper>
       <InnerWrapper onClick={handleCardClick} activeColor={pageContext}>
         <Heading>{title}</Heading>
-        {pageContext === 'twitters' && (
-          <StyledAvatar src={`https://twitter-avatar.now.sh/${twitterName}`} />
-        )}
+        {pageContext === 'twitters' && <StyledAvatar src={`https://robohash.org/${twitterName}`} />}
         {pageContext === 'articles' && <StyledLinkButton href={articleUrl} />}
       </InnerWrapper>
       <InnerWrapper flex>

@@ -2,9 +2,7 @@ import React, { useState } from 'react';
 import styled from 'styled-components';
 import PropTypes from 'prop-types';
 import UserPageTemplate from './UserPageTemplate';
-import Input from '../components/atoms/Input/Input';
 import Heading from '../components/atoms/Heading/Heading';
-import Paragraph from '../components/atoms/Paragraph/Paragraph';
 import ButtonIcon from '../components/atoms/ButtonIcon/ButtonIcon';
 import NewItemBar from '../components/organisms/NewItemBar/NewItemBar';
 import plus from '../assets/icons/plus.svg';
@@ -35,10 +33,6 @@ const StyledHeading = styled(Heading)`
   }
 `;
 
-const StyledParagraph = styled(Paragraph)`
-  opacity: 0.6;
-`;
-
 const StyledButttonIcon = styled(ButtonIcon)`
   height: 50px;
   width: 50px;
@@ -61,19 +55,21 @@ const StyledPageHeader = styled.div`
 const GridTemplate = ({ children, pageContext }) => {
   const [isNewItemBarVisible, setVisible] = useState(false);
 
-  const handleChangeItemBarVisibility = () => setVisible((visable) => !visable);
-
   return (
     <UserPageTemplate>
       <StyledWrapper>
         <StyledPageHeader>
-          <Input search placeholder="Search" />
           <StyledHeading big>{pageContext}</StyledHeading>
-          <StyledParagraph>6 {pageContext}</StyledParagraph>
         </StyledPageHeader>
         <StyledGrid>{children}</StyledGrid>
-        <StyledButttonIcon onClick={handleChangeItemBarVisibility} activeColor={pageContext} />
-        <NewItemBar handleClose={handleChangeItemBarVisibility} isVisible={isNewItemBarVisible} />
+        <StyledButttonIcon
+          onClick={() => setVisible((visable) => !visable)}
+          activeColor={pageContext}
+        />
+        <NewItemBar
+          handleClose={() => setVisible((visable) => !visable)}
+          isVisible={isNewItemBarVisible}
+        />
       </StyledWrapper>
     </UserPageTemplate>
   );

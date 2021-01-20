@@ -1,9 +1,11 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import styled, { keyframes } from 'styled-components';
+import styled from 'styled-components';
 import Heading from '../components/atoms/Heading/Heading';
 import ChatBubble from '../components/atoms/ChatBubble/ChatBubble';
 import logoIcon from '../assets/icons/logo.svg';
+import successBubble from '../assets/icons/successBubble.svg';
+import registerBubble from '../assets/icons/registerBubble.svg';
 
 const StyledWrapper = styled.div`
   left: 0;
@@ -23,15 +25,6 @@ const StyledLogoWrapper = styled.div`
   align-items: center;
 `;
 
-const fadeIn = keyframes`
-  0%, {
-    opacity: 0;
-  }
-  100% {
-    opacity: 1;
-  }
-`;
-
 const ImageWrapper = styled.img`
   height: 200px;
   width: 200px;
@@ -40,7 +33,6 @@ const ImageWrapper = styled.img`
 `;
 
 const StyledChatBubble = styled(ChatBubble)`
-  animation: 0.5s ${fadeIn} ease-in-out;
   transform: translate(130px, -30px);
 `;
 
@@ -57,12 +49,12 @@ const StyledAuthWrapper = styled.div`
   border-radius: 10px;
 `;
 
-const AuthTemplate = ({ children, viewChatBubble, textInBubble, error }) => (
+const AuthTemplate = ({ children, viewBubble, error }) => (
   <StyledWrapper>
     <StyledLogoWrapper>
       <ImageWrapper src={logoIcon} />
-      {viewChatBubble && <StyledChatBubble>{textInBubble}</StyledChatBubble>}
-      {error && <StyledChatBubble>Register first!</StyledChatBubble>}
+      {viewBubble && <StyledChatBubble bubble={successBubble} />}
+      {error && <StyledChatBubble bubble={registerBubble} />}
     </StyledLogoWrapper>
     <Heading>Your new notes experience</Heading>
     <StyledAuthWrapper>{children}</StyledAuthWrapper>
@@ -71,9 +63,12 @@ const AuthTemplate = ({ children, viewChatBubble, textInBubble, error }) => (
 
 AuthTemplate.propTypes = {
   children: PropTypes.arrayOf(PropTypes.object).isRequired,
-  viewChatBubble: PropTypes.bool.isRequired,
-  textInBubble: PropTypes.string.isRequired,
-  error: PropTypes.string.isRequired,
+  viewBubble: PropTypes.bool.isRequired,
+  error: PropTypes.string,
+};
+
+AuthTemplate.defaultProps = {
+  error: null,
 };
 
 export default AuthTemplate;

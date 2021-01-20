@@ -75,7 +75,7 @@ const NewItemBar = ({ pageContext, isVisible, addItem, handleClose }) => (
               as={StyledInput}
               type="text"
               name="twitterName"
-              placeholder="account name eg. donaldtusk"
+              placeholder="account name"
               onChange={handleChange}
               onBlur={handleBlur}
               value={values.twitterName}
